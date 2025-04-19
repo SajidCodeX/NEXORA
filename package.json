@@ -1,0 +1,33 @@
+{
+  "name": "parser",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "sajid",
+  "license": "ISC",
+  "dependencies": {
+    "cheerio": "^1.0.0",
+    "csv-stringify": "^6.5.2",
+    "dotenv": "^16.4.7",
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "express-session": "^1.18.1",
+    "fs": "^0.0.1-security",
+    "gridfs-stream": "^1.1.1",
+    "jimp": "^0.16.1",
+    "jsdom": "^26.0.0",
+    "jsdon": "^0.2.3",
+    "mammoth": "^1.9.0",
+    "mongoose": "^8.13.2",
+    "multer": "^1.4.5-lts.1",
+    "nodemon": "^3.1.9",
+    "pdf-parse": "^1.1.1",
+    "pdf-poppler": "^0.2.1",
+    "pdf2pic": "^3.1.4",
+    "sharp": "^0.34.1",
+    "tesseract.js": "^5.1.1"
+  }
+}

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Form</title>
+    <link rel="stylesheet" href="css/std_info.css">
+</head>
+<body>
+    <div class="student-info">
+        <h2>Student Information</h2>
+        <form action="/uploadResult" method="get">
+            <input type="hidden" name="university" value="<%= university %>"> <!-- Hidden field for university -->
+
+            <label for="std_name">Student Name:</label>
+            <input type="text" id="std_name" name="std_name" placeholder="Enter your name" required>
+
+            <label for="std_enrol">Student Enrollment:</label>
+            <input type="number" id="std_enrol" name="std_enrol" placeholder="Enter enrollment number" required>
+
+            <label for="std_email">Student E-mail:</label>
+            <input type="email" id="std_email" name="std_email" placeholder="Enter your email" required>
+
+            <button type="submit">NEXT</button>
+        </form>
+    </div>
+</body>
+</html>

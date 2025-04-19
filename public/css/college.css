@@ -1,0 +1,123 @@
+/* General Styles */
+body {
+    margin: 0;
+    padding: 0; /* Ensure no padding offsets the centering */
+    font-family: 'Poppins', sans-serif;
+    background: #F9FAFB; /* Soft off-white, matching nav.css */
+    display: flex;
+    align-items: center; /* Vertically center */
+    justify-content: center; /* Horizontally center */
+    min-height: 100vh; /* Ensure full viewport height */
+    height: 100%; /* Ensure body takes full height */
+    color: #2D3748; /* Deep slate gray, matching nav.css */
+    box-sizing: border-box; /* Ensure padding/margins don’t affect layout */
+}
+
+/* Ensure HTML takes full height */
+html {
+    height: 100%; /* Ensure the parent of body takes full height */
+}
+
+/* Heading */
+h2 {
+    color: #2D3748; /* Deep slate gray, matching nav.css */
+    font-size: 26px; /* Slightly increased for larger card */
+    font-weight: 600; /* Matching nav.css heading weight */
+    margin-bottom: 25px; /* Slightly increased spacing */
+}
+
+/* Form Container */
+form {
+    background: linear-gradient(135deg, #FFFFFF, #EAF2FD); /* Subtle gradient, matching nav.css navbar */
+    padding: 40px; /* Increased padding for larger card */
+    border-radius: 12px; /* Slightly increased border-radius for larger card */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06); /* Adjusted shadow to match nav.css */
+    width: 100%;
+    max-width: 600px; /* Increased from 500px to make the card larger */
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 25px; /* Increased gap for better spacing in larger card */
+    border: 1px solid #D1D5DB; /* Light gray border, matching nav.css */
+    transition: transform 0.3s ease; /* Added to match nav.css hover effect */
+    box-sizing: border-box; /* Ensure padding doesn’t affect width */
+}
+
+/* Form Hover Effect */
+form:hover {
+    transform: translateY(-5px); /* Matching nav.css container hover effect */
+}
+
+/* Form Heading */
+form h3 {
+    color: #2D3748; /* Deep slate gray, matching nav.css */
+    margin-bottom: 15px; /* Original spacing preserved */
+    font-size: 24px; /* Increased for larger card */
+    font-weight: 600; /* Matching nav.css heading weight */
+}
+
+/* Dropdown Styling */
+form select {
+    width: 100%;
+    padding: 16px; /* Increased padding for larger card */
+    border: 1px solid #D1D5DB; /* Light gray border, matching nav.css */
+    border-radius: 5px; /* Original border-radius preserved */
+    font-size: 20px; /* Increased font size for larger card */
+    background: #F9FAFB; /* Soft off-white, matching nav.css inputs */
+    color: #2D3748; /* Deep slate gray, matching nav.css */
+    outline: none;
+    transition: all 0.3s ease; /* Original transition preserved */
+    margin-bottom: 15px; /* Original margin preserved */
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.03); /* Added to match nav.css input shadow */
+}
+
+/* Dropdown Focus */
+form select:focus {
+    border: 2px solid #4A90E2; /* Vibrant blue, matching nav.css */
+    background: #F9FAFB; /* Keep background consistent with nav.css */
+    margin-bottom: 50px; /* Original focus margin preserved to maintain logic */
+}
+
+/* Button Styling */
+form button {
+    width: 100%;
+    padding: 16px; /* Increased padding for larger card */
+    background: linear-gradient(135deg, #4A90E2, #357ABD); /* Blue gradient, matching nav.css */
+    color: #FFFFFF;
+    font-size: 22px; /* Increased font size for larger card */
+    font-weight: 600; /* Matching nav.css button weight */
+    border: none;
+    border-radius: 5px; /* Original border-radius preserved */
+    cursor: pointer;
+    transition: all 0.3s ease; /* Original transition preserved, adjusted for nav.css */
+}
+
+/* Button Hover */
+form button:hover {
+    background: linear-gradient(135deg, #357ABD, #4A90E2); /* Reverse gradient, matching nav.css */
+    transform: translateY(-3px); /* Added to match nav.css button hover effect */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12); /* Added to match nav.css button shadow */
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    form {
+        width: 90%; /* Original responsive width preserved */
+        padding: 25px; /* Adjusted padding for mobile */
+        max-width: 100%; /* Ensure it fits on smaller screens */
+    }
+
+    form h3 {
+        font-size: 20px; /* Adjusted for mobile */
+    }
+
+    form select {
+        padding: 14px; /* Adjusted padding for mobile */
+        font-size: 18px; /* Adjusted font size for mobile */
+    }
+
+    form button {
+        padding: 14px; /* Adjusted padding for mobile */
+        font-size: 20px; /* Adjusted font size for mobile */
+    }
+}

@@ -1,0 +1,15 @@
+{
+  "university": "Ganpat University",
+  "document_type": "SEMESTER GRADE REPORT",
+  "student_details": {
+    "programme": "BACHELOR OF TECHNOLOGY",
+    "institute": "U.V. PATEL COLLEGE OF ENGINEERING",
+    "name": "ANSARI SAJIDALI MUNIRAHMED",
+    "branch": "INFORMATION TECHNOLOGY"
+  },
+  "courses": [],
+  "current_semester_performance": {},
+  "progressive_performance": {
+    "backlog": 0
+  }
+}

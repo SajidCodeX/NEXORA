@@ -1,0 +1,40 @@
+<!-- uploaded.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Uploaded Result</title>
+</head>
+<body>
+    <h1>Parsed Result</h1>
+    <% const err = errorMessage || null; const data = parsedData || null; %>
+
+    <% if (errorMessage) { %>
+        <p style="color: red;"><%= errorMessage %></p>
+    <% } else { %>
+        <ul>
+            <li><strong>Name:</strong> <%= parsedData.studentName %></li>
+            <li><strong>Enrollment Number:</strong> <%= parsedData.enrollmentNumber %></li>
+            <li><strong>Programme:</strong> <%= parsedData.programme %></li>
+            <li><strong>Branch:</strong> <%= parsedData.branch %></li>
+            <li><strong>Semester:</strong> <%= parsedData.semester %></li>
+            <li><strong>CGPA:</strong> <%= parsedData.cgpa %></li>
+            <li><strong>SGPA:</strong> <%= parsedData.sgpa %></li>
+            <li><strong>Backlog:</strong> <%= parsedData.backlog %></li>
+            <li><strong>Result:</strong> <%= parsedData.resultStatus %></li>
+        </ul>
+
+        <h2>Courses</h2>
+        <ul>
+            <% parsedData.courses.forEach(course => { %>
+                <li>
+                    <strong><%= course.courseCode %></strong> -
+                    <%= course.courseTitle %> |
+                    Credits: <%= course.courseCredits %>,
+                    Grade: <%= course.courseGrade %>
+                </li>
+            <% }); %>
+        </ul>
+    <% } %>
+</body>
+</html>

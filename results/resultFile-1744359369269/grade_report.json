@@ -1,0 +1,25 @@
+{
+  "student_details": {
+    "name": null,
+    "enrollment_number": null,
+    "institute": null,
+    "programme": null,
+    "branch": null,
+    "semester": null,
+    "examination_period": null
+  },
+  "courses": [],
+  "current_semester_performance": {
+    "credits_offered": null,
+    "credits_earned": null,
+    "grade_points_earned": null,
+    "credit_points_earned": null,
+    "sgpa": null,
+    "result": null
+  },
+  "progressive_performance": {
+    "cgpa": null,
+    "backlog": null
+  },
+  "raw_ocr_text": "Pe Ps Ps\n®.,., Ganpat CD The University BER asthe\nUniversity 3 A JE Best Private University Overall\nwl LLh 42 FB . Where Students Meet Success in Western India by ASSOCHAM\nSEMESTER GRADE REPORT\n21012021004 ANSARI SAJIDALI MUNIRAHMED INFORMATION TECHNOLOGY NOV-DEC 2024 REGULAR\nEE\n"
+}

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload Result</title>
+    <link rel="stylesheet" href="css/uploadResult.css">
+</head>
+<body>
+    <div class="upload-container">
+        <h2>Upload Your Result</h2>
+        <form action="/uploadResult" method="POST" enctype="multipart/form-data">
+            <label for="fileInput" class="custom-file-upload">Choose a File</label>
+            <input id="fileInput" type="file" name="file" accept=".pdf,.jpg,.jpeg,.png" required />
+            <button type="submit" class="upload-btn">Upload</button>
+        </form>
+
+        <% if (errorMessage) { %>
+            <p style="color: red;"><%= errorMessage %></p>
+        <% } %>
+
+        <iframe id="docPreview" width="100%" height="500px" style="display:none;"></iframe>
+    </div>
+
+    <script>
+        document.getElementById('fileInput').addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            const preview = document.getElementById('docPreview');
+
+            if (!file) return;
+
+            const fileType = file.type;
+
+            if (fileType.startsWith("image/")) {
+                const fileURL = URL.createObjectURL(file);
+                preview.src = fileURL;
+                preview.style.display = 'block';
+            } else {
+                preview.style.display = 'none';
+                alert("📄 PDF preview not supported before upload.");
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Result View</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Student Result</h1>
+
+    <section>
+      <h2>Student Information</h2>
+      <ul>
+        <li><strong>Name:</strong> <%= studentInfo.name %></li>
+        <li><strong>Enrollment Number:</strong> <%= studentInfo.enrollmentNumber %></li>
+        <li><strong>Branch:</strong> <%= studentInfo.branch %></li>
+        <li><strong>Programme:</strong> <%= studentInfo.programme %></li>
+        <li><strong>Semester:</strong> <%= studentInfo.semester %></li>
+        <li><strong>Exam Month & Year:</strong> <%= studentInfo.examMonthYear %></li>
+        <li><strong>Result Status:</strong> <%= studentInfo.resultStatus %></li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Theory Courses</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Code</th>
+            <th>Title</th>
+            <th>Credit</th>
+            <th>Grade</th>
+            <th>Grade Point</th>
+            <th>Credit Point</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% courses.theory.forEach(course => { %>
+            <tr>
+              <td><%= course.code %></td>
+              <td><%= course.title %></td>
+              <td><%= course.credit %></td>
+              <td><%= course.grade %></td>
+              <td><%= course.gradePoint %></td>
+              <td><%= course.creditPoint %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>Practical Courses</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Code</th>
+            <th>Title</th>
+            <th>Credit</th>
+            <th>Grade</th>
+            <th>Grade Point</th>
+            <th>Credit Point</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% courses.practical.forEach(course => { %>
+            <tr>
+              <td><%= course.code %></td>
+              <td><%= course.title %></td>
+              <td><%= course.credit %></td>
+              <td><%= course.grade %></td>
+              <td><%= course.gradePoint %></td>
+              <td><%= course.creditPoint %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>Current Semester Performance</h2>
+      <ul>
+        <li><strong>SGPA:</strong> <%= performance.currentSemester.sgpa %></li>
+        <li><strong>Total Credits:</strong> <%= performance.currentSemester.totalCredits %></li>
+        <li><strong>Earned Credits:</strong> <%= performance.currentSemester.earnedCredits %></li>
+        <li><strong>Total Grade Points:</strong> <%= performance.currentSemester.totalGradePoints %></li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Progressive Performance</h2>
+      <ul>
+        <li><strong>CGPA:</strong> <%= performance.progressive.cgpa %></li>
+        <li><strong>Total Credits:</strong> <%= performance.progressive.totalCredits %></li>
+        <li><strong>Earned Credits:</strong> <%= performance.progressive.earnedCredits %></li>
+        <li><strong>Total Grade Points:</strong> <%= performance.progressive.totalGradePoints %></li>
+      </ul>
+    </section>
+  </div>
+</body>
+</html>

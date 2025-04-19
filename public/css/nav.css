@@ -1,0 +1,340 @@
+/* General Styles */
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: #F9FAFB; /* Soft off-white */
+    color: #2D3748; /* Deep slate gray */
+    line-height: 1.6;
+}
+
+/* Navbar Styles */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(135deg, #FFFFFF, #EAF2FD); /* Light gradient */
+    padding: 20px 50px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    border-bottom: 2px solid #D1D5DB; /* Light gray border */
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.navbar .logo img {
+    height: 60px;
+    width: auto;
+    filter: drop-shadow(3px 3px 6px rgba(0, 0, 0, 0.1));
+    transition: transform 0.3s ease;
+}
+
+.navbar .logo a:hover img {
+    transform: scale(1.05);
+}
+
+/* Navigation Links */
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 40px;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-links li {
+    position: relative;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #2D3748;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 10px 20px;
+    border-radius: 30px;
+    transition: all 0.3s ease;
+}
+
+.nav-links a:hover {
+    background: #4A90E2; /* Vibrant blue */
+    color: #FFFFFF;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}/* Dropdown Menu Styles */
+.nav-links {
+    position: relative; /* Ensure parent is relative */
+}
+
+.nav-links .dropdownContent {
+    display: none;
+    position: absolute;
+    top: calc(100% + 5px); /* 5px gap from button */
+    left: 0; /* Align with the parent */
+    background: #FFFFFF;
+    width: auto;
+    list-style: none;
+    padding: 10px 0; /* Reduce padding */
+    border-radius: 10px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+    z-index: 10;
+    opacity: 0;
+    left: 7%;
+    transform: translateX(-50%);
+    transition: all 0.3s ease;
+    min-width: fit-content;
+    max-height: 180px;
+    overflow-y: auto;
+    white-space: nowrap;
+}
+
+/* Dropdown items */
+.nav-links .dropdownContent li {
+    text-align: left; /* Align text properly */
+}
+
+.nav-links .dropdownContent li a {
+    font-size: 14px;
+    padding: 8px 15px; /* Balanced padding */
+    border-radius: 6px;
+    color: #2D3748;
+    display: block;
+    transition: background 0.2s ease;
+}
+
+/* Hover effect */
+.nav-links .dropdownContent li a:hover {
+    background: #4A90E2;
+    color: #FFFFFF;
+}
+
+/* Show dropdown */
+.nav-links li:hover .dropdownContent {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Hover effect */
+.nav-links .dropdownContent li a:hover {
+    background: #4A90E2;
+    color: #FFFFFF;
+}
+
+/* Show dropdown */
+.nav-links li:hover .dropdownContent {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Menu Toggle */
+.menu-toggle {
+    display: none;
+    font-size: 28px;
+    color: #2D3748;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.menu-toggle:hover {
+    transform: rotate(90deg);
+}
+
+/* Hero Section */
+.hero {
+    text-align: center;
+    padding: 80px 20px;
+    background: linear-gradient(135deg, #EAF2FD, #F9FAFB); /* Subtle gradient */
+    margin-top: 25px;
+}
+
+.hero h1 {
+    font-size: 42px;
+    font-weight: 700;
+    color: #2D3748;
+    margin-bottom: 15px;
+    letter-spacing: 1px;
+}
+
+.hero p {
+    font-size: 18px;
+    color: #4A5568; /* Slightly lighter gray */
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Main Content */
+main {
+    max-width: 1100px;
+    margin: 60px auto;
+    padding: 0 20px;
+}
+
+/* Parser Container */
+.parser-container {
+    background: #FFFFFF; /* Pure white */
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+    transition: transform 0.3s ease;
+}
+
+.parser-container:hover {
+    transform: translateY(-5px);
+}
+
+.parser-container h2 {
+    font-size: 26px;
+    font-weight: 600;
+    color: #2D3748;
+    margin-bottom: 25px;
+}
+
+.parser-container textarea {
+    width: 100%;
+    height: 220px;
+    background: #F9FAFB;
+    border: 1px solid #D1D5DB;
+    border-radius: 12px;
+    padding: 20px;
+    font-size: 16px;
+    color: #2D3748;
+    resize: vertical;
+    outline: none;
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.03);
+    transition: border-color 0.3s ease;
+}
+
+.parser-container textarea:focus {
+    border-color: #4A90E2;
+}
+
+/* Button */
+.parse-btn {
+    background: linear-gradient(135deg, #4A90E2, #357ABD); /* Blue gradient */
+    color: #FFFFFF;
+    border: none;
+    padding: 14px 40px;
+    border-radius: 50px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 25px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    transition: all 0.3s ease;
+}
+
+.parse-btn:hover {
+    background: linear-gradient(135deg, #357ABD, #4A90E2);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+}
+
+/* Results Container */
+.results-container {
+    background: #FFFFFF;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+}
+
+.results-container h2 {
+    font-size: 26px;
+    font-weight: 600;
+    color: #2D3748;
+    margin-bottom: 25px;
+}
+
+.output-box {
+    background: #F9FAFB;
+    border: 1px solid #D1D5DB;
+    border-radius: 12px;
+    padding: 25px;
+    min-height: 180px;
+    font-size: 16px;
+    color: #2D3748;
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    .navbar {
+        padding: 15px 20px;
+    }
+
+    .navbar .logo img {
+        height: 50px;
+    }
+
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 70px;
+        right: 20px;
+        background: #FFFFFF;
+        width: 240px;
+        border-radius: 12px;
+        padding: 15px 0;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    }
+
+    .nav-links.active {
+        display: flex;
+        animation: slideIn 0.4s ease;
+    }
+
+    .nav-links li {
+        text-align: center;
+        padding: 10px;
+    }
+
+    .menu-toggle {
+        display: block;
+    }
+
+    .nav-links .dropdownContent {
+        position: static;
+        display: none;
+        width: 100%;
+        background: #FFFFFF;
+        box-shadow: none;
+    }
+
+    .nav-links li:hover .dropdownContent {
+        display: none;
+    }
+
+    .hero {
+        padding: 50px 15px;
+    }
+
+    .hero h1 {
+        font-size: 32px;
+    }
+
+    .hero p {
+        font-size: 16px;
+    }
+
+    .parser-container, .results-container {
+        padding: 25px;
+        margin: 20px 15px;
+    }
+
+    .parse-btn {
+        padding: 12px 30px;
+    }
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
