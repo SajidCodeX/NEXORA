@@ -9,6 +9,8 @@
   "author": "sajid",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.1.1",
+    "bcryptjs": "^3.0.2",
     "cheerio": "^1.0.0",
     "csv-stringify": "^6.5.2",
     "dotenv": "^16.4.7",

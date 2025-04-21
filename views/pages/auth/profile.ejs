@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Profile</title>
+  <link rel="stylesheet" href="/css/auth/profile.css">
+</head>
+<body>
+
+<div class="profile-container">
+  <h2>Welcome, <%= user.username %>!</h2>
+
+  <div class="user-details">
+    <p><strong>Username:</strong> <%= user.username %></p>
+    <p><strong>Email:</strong> <%= user.email %></p>
+    <!-- (Optional) Add more fields later like createdAt -->
+  </div>
+
+  <div class="logout-link">
+    <a href="/auth/logout">Logout</a>
+  </div>
+</div>
+
+</body>
+</html>

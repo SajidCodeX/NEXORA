@@ -59,6 +59,12 @@ function extractStudentInfo(lines) {
   };
 }
 
+
+/**
+ * 
+ * @param {*} lines 
+ * @returns 
+ */
 function extractCourses(lines) {
   const courses = { theory: [], practical: [] };
 

@@ -1,23 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Parser Pro - Home</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/css/nav.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Parser Pro - Home</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/nav.css">
+  <link rel="stylesheet" href="/css/home.css">
 </head>
 
 <body>
-    <!-- Include the nav component -->
-    <%- include("../includes/nav") %>
+  <!-- Include the navigation bar -->
+  <%- include("../includes/nav") %>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <h1>Unleash the Power of Data Parsing</h1>
-        <p>Transform complex data into actionable insights with ease and elegance.</p>
-    </section>
+  <% if (!session.isAuthenticated) { %>
+  <div id="authModal" class="modal">
+    <div class="modal-content">
+      <h2>Welcome to Parser Pro</h2>
+      <p>Access your personalized dashboard by logging in, or <a href="/register">create a new account</a> to get started.</p>
+      <div class="modal-buttons">
+        <a href="/login" class="btn">Login</a>
+        <a href="/register" class="btn">Sign Up</a>
+      </div>
+      <button id="closeModal" class="close-btn">Close</button>
+    </div>
+  </div>
+  <% } %>
 
-    <script src="/js/nav.js"></script>
+  <!-- Hero Section -->
+  <section class="hero">
+    <h1>Parse Data with Precision and Power</h1>
+    <p>Effortlessly transform raw documents into structured, actionable insights — fast, accurate, and reliable.</p>
+  </section>
+
+  <!-- Products Section -->
+  <section class="products">
+    <h2 class="section-title">Our Solutions</h2>
+    <div class="product-list">
+      <div class="product-card">
+        <img src="/img/education-parser.png" alt="Education Parser">
+        <h3>Education Parser</h3>
+        <p>Extract academic transcripts, student records, and institutional reports with cutting-edge accuracy and speed.</p>
+        <a href="/choose_college" class="btn">Learn More</a>
+      </div>
+      <div class="product-card">
+        <img src="/img/insurance-parser.png" alt="Insurance Parser">
+        <h3>Insurance Parser</h3>
+        <p>Streamline the extraction of vital insurance data from policies, claims, and assessments with our advanced parser.</p>
+        <a href="/insurance-parser" class="btn">Learn More</a>
+      </div>
+    </div>
+  </section>
+
+  <script src="/js/nav.js"></script>
+
+  <% if (!session.isAuthenticated) { %>
+  <script>
+    window.onload = function() {
+      const modal = document.getElementById('authModal');
+      modal.style.display = "block";
+
+      document.getElementById('closeModal').onclick = function() {
+        modal.style.display = "none";
+      }
+
+      window.onclick = function(event) {
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      }
+    }
+  </script>
+  <% } %>
 </body>
 </html>

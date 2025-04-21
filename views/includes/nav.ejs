@@ -1,7 +1,8 @@
 <nav class="navbar">
     <div class="logo">
         <a href="/home">
-            <img src="/img/nexora-logo.svg" alt="NEXORA Logo" style="height: 60px; width: auto;">        </a>
+            <img src="/img/nexora-logo.svg" alt="NEXORA Logo" style="height: 60px; width: auto;">
+        </a>
     </div>
 
     <ul class="nav-links">
@@ -13,7 +14,18 @@
                 <li><a href="/ins_company">Insurance</a></li>
             </ul>
         </li>
-        <li><a href="#">Profile</a></li>
+        <li class="profile-menu">
+            <a href="#" class="dropdown">Profile</a>
+            <ul class="dropdownContent">
+                <% if (typeof user !== 'undefined' && user) { %>
+                    <li><a href="/profile">My Profile</a></li>   <!-- ✅ New added -->
+                    <li><a href="/logout">Logout</a></li>
+                <% } else { %>
+                    <li><a href="/login">Login</a></li>
+                    <li><a href="/register">Sign Up</a></li>
+                <% } %>
+            </ul>
+        </li>
     </ul>
 
     <div class="menu-toggle">☰</div>
