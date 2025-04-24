@@ -1,87 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Upload Result</title>
   <link rel="stylesheet" href="/css/uploadResult.css">
 </head>
+
 <body>
-    <div class="container">
-        <!-- Upload Section -->
-        <div class="section">
-          <h2>Upload Your Result</h2>
-          <form action="/uploadResult" method="POST" enctype="multipart/form-data">
-            <label for="fileInput" class="custom-file-upload">Choose a File</label>
-            <input id="fileInput" type="file" name="file" accept=".pdf,.jpg,.jpeg,.png" required />
-            <button type="submit" class="upload-btn">Upload</button>
-          </form>
-          
-          <% if (errorMessage) { %>
-            <p class="error"><%= errorMessage %></p>
+  <div class="container">
+    <!-- Upload Section -->
+    <div class="section">
+      <h2>Upload Your Result</h2>
+      <form action="/uploadResult" method="POST" enctype="multipart/form-data">
+        <label for="fileInput" class="custom-file-upload">Choose a File</label>
+        <input id="fileInput" type="file" name="file" accept=".pdf,.jpg,.jpeg,.png" required />
+        <button type="submit" class="upload-btn">Upload</button>
+        <button class="home-btn" onclick="window.location.href='/home';">Home</button><% if (errorMessage) { %>
+      </form>
+
+        <p class="error">
+          <%= errorMessage %>
+        </p>
+        <% } %>
+    </div>
+
+    <!-- Preview Section -->
+    <div class="section" id="previewSection">
+      <h2>Preview</h2>
+      <div id="previewContainer"></div>
+    </div>
+
+    <!-- Parsed JSON Output -->
+    <div class="section" id="jsonSection">
+      <h2>Generated JSON</h2>
+      <% if (parsedResult) { %>
+        <div class="json-actions">
+          <button id="copyJson" class="json-btn">Copy</button>
+          <button id="downloadJson" class="json-btn">Download</button>
+        </div>
+        <pre id="jsonOutput"><%= JSON.stringify(parsedResult, null, 2) %></pre>
+        <% } else { %>
+          <p>No result parsed yet.</p>
           <% } %>
-        </div>
-    
-        <!-- Preview Section -->
-        <div class="section" id="previewSection">
-          <h2>Preview</h2>
-          <div id="previewContainer"></div>
-        </div>
-    
-        <!-- Parsed JSON Output -->
-        <div class="section" id="jsonSection">
-            <h2>Generated JSON</h2>
-            <% if (parsedResult) { %>
-              <div class="json-actions">
-                <button id="copyJson" class="json-btn">Copy</button>
-                <button id="downloadJson" class="json-btn">Download</button>
-              </div>
-              <pre id="jsonOutput"><%= JSON.stringify(parsedResult, null, 2) %></pre>
-            <% } else { %>
-              <p>No result parsed yet.</p>
-            <% } %>
-          </div>
-    
-      <script>
-        document.getElementById('fileInput').addEventListener('change', function (event) {
-          const file = event.target.files[0];
-          const previewContainer = document.getElementById('previewContainer');
-          previewContainer.innerHTML = "";
-    
-          if (!file) return;
-    
-          const fileType = file.type;
-    
-          if (fileType.startsWith("image/")) {
-            const img = document.createElement("img");
-            img.src = URL.createObjectURL(file);
-            previewContainer.appendChild(img);
-          } else if (fileType === "application/pdf") {
-            const embed = document.createElement("embed");
-            embed.src = URL.createObjectURL(file);
-            embed.type = "application/pdf";
-            previewContainer.appendChild(embed);
-          } else {
-            previewContainer.innerHTML = "<p>Unsupported file type</p>";
-          }
-        });
+    </div>
 
-        // Copy to Clipboard
-        document.getElementById('copyJson').addEventListener('click', function() {
-          const jsonOutput = document.getElementById('jsonOutput').textContent;
-          navigator.clipboard.writeText(jsonOutput).then(() => {
-            alert('JSON copied to clipboard!');
-          });
-        });
+    <script>
+      document.getElementById('fileInput').addEventListener('change', function (event) {
+        const file = event.target.files[0];
+        const previewContainer = document.getElementById('previewContainer');
+        previewContainer.innerHTML = "";
 
-        // Download JSON as file
-        document.getElementById('downloadJson').addEventListener('click', function() {
-          const jsonOutput = document.getElementById('jsonOutput').textContent;
-          const blob = new Blob([jsonOutput], { type: 'application/json' });
-          const link = document.createElement('a');
-          link.href = URL.createObjectURL(blob);
-          link.download = 'parsedResult.json';
-          link.click();
+        if (!file) return;
+
+        const fileType = file.type;
+
+        if (fileType.startsWith("image/")) {
+          const img = document.createElement("img");
+          img.src = URL.createObjectURL(file);
+          previewContainer.appendChild(img);
+        } else if (fileType === "application/pdf") {
+          const embed = document.createElement("embed");
+          embed.src = URL.createObjectURL(file);
+          embed.type = "application/pdf";
+          previewContainer.appendChild(embed);
+        } else {
+          previewContainer.innerHTML = "<p>Unsupported file type</p>";
+        }
+      });
+
+      // Copy to Clipboard
+      document.getElementById('copyJson').addEventListener('click', function () {
+        const jsonOutput = document.getElementById('jsonOutput').textContent;
+        navigator.clipboard.writeText(jsonOutput).then(() => {
+          alert('JSON copied to clipboard!');
         });
-      </script>
+      });
+
+      // Download JSON as file
+      document.getElementById('downloadJson').addEventListener('click', function () {
+        const jsonOutput = document.getElementById('jsonOutput').textContent;
+        const blob = new Blob([jsonOutput], { type: 'application/json' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'parsedResult.json';
+        link.click();
+      });
+    </script>
 </body>
+
 </html>

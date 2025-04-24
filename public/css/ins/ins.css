@@ -1,0 +1,29 @@
+/* Coming Soon Container */
+.coming-soon-container {
+    text-align: center;
+    padding: 100px 20px;
+    background-color: #f4f4f9;
+    font-family: 'Poppins', sans-serif;
+}
+
+.coming-soon-container h1 {
+    font-size: 3rem;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.coming-soon-container p {
+    font-size: 1.2rem;
+    color: #666;
+    margin-top: 10px;
+}
+
+@media (max-width: 600px) {
+    .coming-soon-container h1 {
+        font-size: 2rem;
+    }
+
+    .coming-soon-container p {
+        font-size: 1rem;
+    }
+}

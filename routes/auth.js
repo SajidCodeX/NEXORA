@@ -11,6 +11,7 @@ router.get("/register", (req, res) => {
 
 // Register Route (POST)
 router.post('/register', async (req, res) => {
+  console.log(req.body);
     const { username, email, password } = req.body;
   
     try {
@@ -27,7 +28,7 @@ router.post('/register', async (req, res) => {
       await newUser.save();
   
       // Step 3: Redirect to login after successful register
-      res.redirect('/auth/login');
+      res.redirect('/login');
   
     } catch (error) {
       console.error('Registration error:', error);
@@ -69,6 +70,7 @@ router.post('/login', async (req, res) => {
             email: user.email,
         };
         req.session.isAuthenticated = true;
+        req.session.userId = user._id;
 
         res.redirect('/home');
     } catch (err) {
@@ -86,6 +88,8 @@ router.get('/profile', (req, res) => {
       user: req.session.user
     });
   });
+
+
 
 
 // Logout Route
