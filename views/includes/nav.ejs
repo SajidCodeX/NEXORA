@@ -7,25 +7,29 @@
 
     <ul class="nav-links">
         <li><a href="/home">Home</a></li>
+        <li><a href="/about">About</a></li>
         <li class="dropdown">
-            <a href="#" class="category">Category</a>
+            <a href="#" class="category">Solutions</a>
             <ul class="dropdownContent">
                 <li><a href="/choose_college">Education</a></li>
                 <li><a href="/ins_company">Insurance</a></li>
             </ul>
         </li>
-        <li class="profile-menu">
-            <a href="#" class="dropdown">Profile</a>
-            <ul class="dropdownContent">
-                <% if (typeof user !== 'undefined' && user) { %>
-                    <li><a href="/profile">My Profile</a></li>   <!-- ✅ New added -->
+
+        <li><a href="/viewItems">History</a></li>
+
+        <% if (typeof user !== 'undefined' && user) { %>
+            <li class="profile-menu dropdown">
+                <a href="#" class="dropdown">Profile</a>
+                <ul class="dropdownContent">
+                    <li><a href="/profile">My Profile</a></li>   
                     <li><a href="/logout">Logout</a></li>
-                <% } else { %>
-                    <li><a href="/login">Login</a></li>
-                    <li><a href="/register">Sign Up</a></li>
-                <% } %>
-            </ul>
-        </li>
+                </ul>
+            </li>
+        <% } else { %>
+            <li><a href="/login">Login</a></li>
+            <li><a href="/register">Sign Up</a></li>
+        <% } %>
     </ul>
 
     <div class="menu-toggle">☰</div>

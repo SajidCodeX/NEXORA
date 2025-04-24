@@ -1,32 +1,21 @@
 const mongoose = require("mongoose");
 
 const studentSchema = new mongoose.Schema({
-  enrollmentNumber: { type: String, required: true },
-  name: { type: String, required: true },
-  branch: { type: String },
-  programme: { type: String },
-  semester: { type: String },
-  courses: [
-    {
-      courseCode: String,
-      courseTitle: String,
-      credits: Number,
-      grade: String,
-      points: Number,
+    std_name: {
+        type: String,
+        required: true,
     },
-  ],
-  currentSemesterPerformance: {
-    sgpa: Number,
-    cgpa: Number,
-    backlog: Number,
-  },
-  progressivePerformance: {
-    sgpa: Number,
-    cgpa: Number,
-    backlog: Number,
-  },
-});
+    std_enrol: {
+        type: String,
+        required: true// Unique enrollment number
+    },
+    std_email: {
+        type: String,
+        required: true // Unique email
+    },
+}
+);
 
-const Student = mongoose.model("Student", studentSchema);
+const Students = mongoose.model("Students", studentSchema);
 
-module.exports = Student;
+module.exports = Students;

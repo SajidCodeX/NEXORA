@@ -3,10 +3,12 @@ const path = require("path");
 const multer = require("multer");
 const fs = require("fs");
 const session = require("express-session");
-const { parseGanpatResult } = require("./parsers/pdfGanpatParser");
+const { university_parse_map, university_code_map } = require("./parsers/uni_list"); // ✅ yahan correct import
 const connectDB = require("./db/connection");
 const authRoutes = require("./routes/auth");
 const app = express();
+const Students = require("./db/models/student");
+const College = require("./db/models/selectCollege");
 
 // Connect to MongoDB
 connectDB();
@@ -17,14 +19,13 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.static("uploads"));
 
-// 🛑 FIRST: Setup session correctly here
+// Setup session
 app.use(session({
   secret: "nexora-secret",
   resave: false,
   saveUninitialized: true
 }));
 
-// ✅ SECOND: Now setup locals middleware
 app.use((req, res, next) => {
   res.locals.user = req.session.user;
   next();
@@ -37,7 +38,7 @@ app.use('/', authRoutes);
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
-// Multer setup for PDF only
+// Multer setup
 const storage = multer.diskStorage({
   destination: "./uploads/",
   filename: (req, file, cb) => {
@@ -60,34 +61,48 @@ app.get("/home", (req, res) => {
   res.render("pages/home", { session: req.session });
 });
 
-app.get("/choose_college",(req, res) => {
+app.get("/choose_college", (req, res) => {
   res.render("pages/categories/education/college");
 });
 
-app.post('/choose_college', (req, res) => {
-  const selectedCollege = req.body.college;
+app.get("/std_info", async (req, res) => {
+  const selectedCollegeName = req.query.college_selection;
+  console.log("Selected College Name:", selectedCollegeName);
 
-  if (selectedCollege === 'ganpat') {
-    res.redirect('/upload/ganpat');
-  } else if (selectedCollege === 'nirma') {
-    res.redirect('/upload/nirma');
-  } else if (selectedCollege === 'iit') {
-    res.redirect('/upload/iit');
-  } else {
-    // Default ya error handle
-    res.redirect('/choose_college');
+  // ✅ Store selected college in session
+  req.session.university = selectedCollegeName;
+
+  try {
+    const newCollege = new College({
+      college_name: selectedCollegeName,
+    });
+
+    await newCollege.save();
+    console.log("✅ College saved successfully!");
+
+    res.render("pages/categories/education/std_info", { university: selectedCollegeName });
+  } catch (error) {
+    console.error("Error saving college:", error);
+    res.status(500).send("Failed to save selected college.");
   }
 });
 
-app.post("/choose_university", (req, res) => {
-  req.session.university = req.body.university;
-  res.redirect("/std_info");
-});
+app.post("/std_info", async (req, res) => {
+  try {
+    const student = new Students({
+      std_name: req.body.std_name,
+      std_enrol: req.body.std_enrol,
+      std_email: req.body.std_email
+    });
+    console.log(req.body.std_name, req.body.std_enrol, req.body.std_email);
+    await student.save();
+    console.log("✅ Student saved successfully!");
 
-app.get("/std_info", (req, res) => {
-  res.render("pages/categories/education/std_info", {
-    university: req.session.university || "Unknown"
-  });
+    res.redirect(`/uploadResult`);
+  } catch (error) {
+    console.error("Error saving student:", error);
+    res.status(500).send("Failed to save student data.");
+  }
 });
 
 app.post("/upload", (req, res) => {
@@ -100,61 +115,100 @@ app.post("/upload", (req, res) => {
 });
 
 app.get("/uploadResult", (req, res) => {
-  res.render("pages/categories/education/uploadResult", { errorMessage: null });
+  res.render("pages/categories/education/uploadResult", {
+    errorMessage: null,
+    parsedResult: null,
+    filePreview: null // if you're using this too
+  });
 });
 
 app.post("/uploadResult", upload.single("file"), async (req, res) => {
   try {
     if (!req.file) {
       return res.render("pages/categories/education/uploadResult", {
-        errorMessage: "Please upload a PDF file."
+        errorMessage: "No file uploaded.",
+        parsedResult: null, // Ensure parsedResult is passed as null initially
+        filePreview: null, // Preview as null if no file
+        uploadedFilePath: null
       });
     }
 
     const filePath = req.file.path;
+    const filePreview = `/uploads/${req.file.filename}`; // for preview
+    console.log("✅ File uploaded successfully:", filePath);
 
-    const result = await parseGanpatResult(filePath);
+    const selectedUniversityFullName = req.session.university;
+    const universityCode = university_code_map[selectedUniversityFullName];
 
+    if (!universityCode) {
+      return res.status(400).send("No parser found for the selected university.");
+    }
+
+    const parser = university_parse_map[universityCode];
+    if (!parser) {
+      return res.status(400).send("No parser found for the selected university.");
+    }
+
+    const result = await parser.parse(filePath);
     result.userInfo = {
       name: req.session.student?.std_name,
       email: req.session.student?.std_email,
       enrollmentNumber: req.session.student?.std_enrol,
-      university: req.session.university
+      university: selectedUniversityFullName
     };
 
     req.session.latestParsedResult = result;
 
-    res.redirect("/viewResult");
-  } catch (err) {
-    console.error("PDF parsing error:", err);
+    // Pass parsedResult along with filePreview
     res.render("pages/categories/education/uploadResult", {
-      errorMessage: "Failed to parse the PDF. Please ensure it's a valid Ganpat University result PDF."
+      errorMessage: null,
+      parsedResult: result,  // Pass the parsed result here
+      filePreview, // Pass preview path to EJS
+      uploadedFilePath: filePreview // Ensure filePreview is passed for preview display
+    });
+
+  } catch (err) {
+    console.error("❌ PDF parsing error:", err);
+    res.render("pages/categories/education/uploadResult", {
+      errorMessage: "Failed to parse the PDF. Please ensure it's a valid university result PDF.",
+      parsedResult: null, // Make sure to pass null in case of error
+      filePreview: null, // And filePreview as null in case of error
+      uploadedFilePath: null
     });
   }
 });
 
-app.get("/viewResult", (req, res) => {
-  const result = req.session.latestParsedResult;
 
-  if (!result) {
-    return res.status(404).send("No result available. Please upload a PDF first.");
-  }
 
-  res.json(result);
+
+
+// app.get("/viewResult", (req, res) => {
+//   const result = req.session.latestParsedResult;
+
+//   if (!result) {
+//     return res.status(404).send("No result available. Please upload a PDF first.");
+//   }
+
+//   res.json(result);
+// });
+
+app.get('/about', (req, res) => {
+  res.render('pages/categories/aboutServices/about');
 });
 
-// Auth routes
-app.use("/auth", authRoutes);
-
-// Redirect root to home
-app.get("/", (req, res) => {
-  res.redirect("/home");
+app.get('/edu_about', (req, res) => {
+  res.render('pages/categories/education/about');
 });
 
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).send(`Something broke! Error: ${err.message}`);
+});
+
+// Redirect root to home
+app.get("/", (req, res) => {
+  res.redirect("/home");
 });
 
 // Start server

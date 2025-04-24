@@ -3,20 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Parser Pro - Home</title>
+  <title>NEXORA - Home</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/nav.css">
   <link rel="stylesheet" href="/css/home.css">
+  <link rel="stylesheet" href="/css/footer.css">
 </head>
 
 <body>
+
   <!-- Include the navigation bar -->
-  <%- include("../includes/nav") %>
+  <%- include('../includes/nav') %>
 
   <% if (!session.isAuthenticated) { %>
   <div id="authModal" class="modal">
     <div class="modal-content">
-      <h2>Welcome to Parser Pro</h2>
+      <h2>Welcome to NEXORA</h2>
       <p>Access your personalized dashboard by logging in, or <a href="/register">create a new account</a> to get started.</p>
       <div class="modal-buttons">
         <a href="/login" class="btn">Login</a>
@@ -41,8 +43,9 @@
         <img src="/img/education-parser.png" alt="Education Parser">
         <h3>Education Parser</h3>
         <p>Extract academic transcripts, student records, and institutional reports with cutting-edge accuracy and speed.</p>
-        <a href="/choose_college" class="btn">Learn More</a>
+        <a href="/edu_about" class="btn">Learn More</a>
       </div>
+
       <div class="product-card">
         <img src="/img/insurance-parser.png" alt="Insurance Parser">
         <h3>Insurance Parser</h3>
@@ -52,6 +55,10 @@
     </div>
   </section>
 
+  <!-- Footer -->
+  <%- include('../includes/footer') %>
+
+  <!-- Scripts -->
   <script src="/js/nav.js"></script>
 
   <% if (!session.isAuthenticated) { %>
@@ -72,5 +79,6 @@
     }
   </script>
   <% } %>
+
 </body>
 </html>

@@ -1,60 +1,85 @@
 /* profile.css */
 
+/* General Layout */
 body {
-    font-family: 'Poppins', sans-serif;
-    background: #f5f6fa;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
-  
+  font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background: url('/img/background.jpg') no-repeat center center/cover; /* Change path if needed */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* Profile Container */
+.profile-container {
+  background: rgba(255, 255, 255, 0.75); /* Transparency added */
+  backdrop-filter: blur(10px); /* Glass effect */
+  border-radius: 4px; /* Sharp corners */
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+  padding: 3rem 2.5rem;
+  width: 100%;
+  max-width: 400px;
+  transition: all 0.4s ease;
+}
+
+/* Heading Styles */
+.profile-container h2 {
+  font-size: 32px;
+  margin-bottom: 25px;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+/* User Details */
+.user-details {
+  text-align: left;
+  margin-top: 20px;
+}
+
+.user-details p {
+  margin: 12px 0;
+  font-size: 16px;
+  color: #7f8c8d;
+}
+
+.user-details strong {
+  color: #2c3e50;
+  font-weight: 500;
+}
+
+/* Logout Link */
+.logout-link {
+  margin-top: 35px;
+}
+
+.logout-link a {
+  text-decoration: none;
+  background: #e74c3c;
+  color: #fff;
+  padding: 12px 25px;
+  border-radius: 50px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+.logout-link a:hover {
+  background: #c0392b;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 600px) {
   .profile-container {
-    background: #ffffff;
-    padding: 40px;
-    border-radius: 15px;
-    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    width: 350px;
+      padding: 30px;
   }
-  
+
   .profile-container h2 {
-    margin-bottom: 20px;
-    color: #333;
-    font-size: 28px;
+      font-size: 28px;
   }
-  
-  .user-details {
-    text-align: left;
-    margin-top: 20px;
-  }
-  
-  .user-details p {
-    margin: 10px 0;
-    font-size: 16px;
-    color: #555;
-  }
-  
-  .user-details strong {
-    color: #222;
-  }
-  
-  .logout-link {
-    margin-top: 30px;
-  }
-  
-  .logout-link a {
-    text-decoration: none;
-    background: #ff4b2b;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 30px;
-    transition: background 0.3s;
-  }
-  
-  .logout-link a:hover {
-    background: #ff1c00;
-  }
-  
+}
