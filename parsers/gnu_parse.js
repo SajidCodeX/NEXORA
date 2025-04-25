@@ -50,7 +50,7 @@ class gnu_parse {
   }
 
   extractStudentInfo(rows) {
-    console.log("Rows:", rows);
+    // console.log("Rows:", rows);
   
     let enrollmentNumber = "N/A", name = "N/A", branch = "N/A", semester = "N/A";
     let monthAndYearOfExamination = "N/A", examType = "N/A", programme = "N/A", institute = "N/A", resultStatus = "N/A";
@@ -62,7 +62,7 @@ class gnu_parse {
       }
     });
   
-    console.log("🎯 Basic Info Rows:", basicInfo_rows);
+    // console.log("🎯 Basic Info Rows:", basicInfo_rows);
   
     if (basicInfo_rows.length >= 2) {
       const headers = basicInfo_rows[0];

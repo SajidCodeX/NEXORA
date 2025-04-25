@@ -214,7 +214,18 @@ app.get('/about', (req, res) => {
 
 app.get("/insurance", (req, res) => {
   res.render("pages/categories/insurance/insurance")
-})
+});
+
+app.get("/edu_about", (req, res) => {
+  res.render("pages/categories/education/about")
+});
+
+app.get("/ins_about", (req, res) => {
+  res.render("pages/categories/insurance/insurance")
+});
+
+const adminRoutes = require('./routes/admin');
+app.use('/admin', adminRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
