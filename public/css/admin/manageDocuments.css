@@ -1,0 +1,82 @@
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 25px 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: #fff;
+  }
+  
+  thead {
+    background-color: #f1f5f9;
+  }
+  
+  th {
+    padding: 16px 20px;
+    font-weight: 600;
+    font-size: 15px;
+    color: #374151;
+    border-bottom: 1px solid #e5e7eb;
+    text-align: left;
+  }
+  
+  tbody tr {
+    transition: background-color 0.3s ease;
+  }
+  
+  tbody tr:hover {
+    background-color: #f9fafb;
+  }
+  
+  td {
+    padding: 14px 20px;
+    color: #4b5563;
+    font-size: 14px;
+    border-bottom: 1px solid #f3f4f6;
+  }
+  
+  td:nth-child(4) {
+    font-weight: 600;
+    text-transform: capitalize;
+  }
+  
+  a {
+    text-decoration: none;
+    font-weight: 500;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    margin-right: 8px;
+    transition: background 0.3s ease, color 0.3s ease;
+  }
+  
+  a[href*="view-parsed"] {
+    background-color: #10b981;
+    color: white;
+  }
+  
+  a[href*="view-parsed"]:hover {
+    background-color: #059669;
+  }
+  
+  a[href*="download"] {
+    background-color: #3b82f6;
+    color: white;
+  }
+  
+  a[href*="download"]:hover {
+    background-color: #2563eb;
+  }
+  
+  a[href*="delete-file"] {
+    background-color: #ef4444;
+    color: white;
+  }
+  
+  a[href*="delete-file"]:hover {
+    background-color: #dc2626;
+  }
+  

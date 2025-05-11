@@ -1,94 +1,102 @@
+// Import core modules and dependencies
 const express = require("express");
 const path = require("path");
 const multer = require("multer");
 const fs = require("fs");
 const session = require("express-session");
+
+// Import local modules and configurations
 const { university_parse_map, university_code_map } = require("./parsers/uni_list");
 const connectDB = require("./db/connection");
 const authRoutes = require("./routes/auth");
-const app = express();
+
+// Import MongoDB models
+const User = require("./db/models/user");
 const Students = require("./db/models/student");
 const College = require("./db/models/selectCollege");
 const Files = require("./db/models/Files");
 
+// Initialize Express app
+const app = express();
+
+// Connect to MongoDB
 connectDB();
 
-// Middleware
+// Set up middlewares
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-console.log(path.join(__dirname, "uploads"));
 
-// Setup session
+// Configure session middleware
 app.use(session({
   secret: "nexora-secret",
   resave: false,
   saveUninitialized: true,
-  cookie: { secure: false }
+  cookie: { secure: false } // Use true if HTTPS is enabled
 }));
 
+// Make user info available in all views
 app.use((req, res, next) => {
   res.locals.user = req.session.user;
   next();
 });
 
-// Auth routes
-app.use('/', authRoutes);
-
-// View engine
+// Set up EJS view engine
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
-// Multer setup
+// Configure Multer for file uploads
 const storage = multer.diskStorage({
   destination: "./uploads/",
   filename: (req, file, cb) => {
     cb(null, "result-" + Date.now() + path.extname(file.originalname));
   }
 });
+
+const fileFilter = (req, file, cb) => {
+  const ext = path.extname(file.originalname).toLowerCase();
+  const isPdf = ext === ".pdf" && file.mimetype === "application/pdf";
+  cb(null, isPdf);
+};
+
 const upload = multer({
   storage,
-  limits: { fileSize: 100 * 1024 * 1024 },
-  fileFilter: (req, file, cb) => {
-    const ext = path.extname(file.originalname).toLowerCase();
-    const isPdf = ext === ".pdf" && file.mimetype === "application/pdf";
-    if (isPdf) cb(null, true);
-    else cb(new Error("Only PDF files allowed!"));
-  }
+  limits: { fileSize: 100 * 1024 * 1024 }, // 100MB file size limit
+  fileFilter
 });
 
-// Pages
+const uploadMiddleware = upload.single("file");
+
+// Mount auth and admin routes
+app.use('/', authRoutes);
+app.use('/admin', require('./routes/admin'));
+
+// Routes
+// Home page
 app.get("/home", (req, res) => {
   res.render("pages/home", { session: req.session });
 });
 
+// College selection
 app.get("/choose_college", (req, res) => {
   res.render("pages/categories/education/college");
 });
 
+// Student info form (GET)
 app.get("/std_info", async (req, res) => {
   const selectedCollegeName = req.query.college_selection;
-  console.log("Selected College Name:", selectedCollegeName);
-
-  // Store selected college in session
   req.session.university = selectedCollegeName;
-
   try {
-    const newCollege = new College({
-      college_name: selectedCollegeName,
-    });
-
+    const newCollege = new College({ college_name: selectedCollegeName });
     await newCollege.save();
-    console.log("✅ College saved successfully!");
-
     res.render("pages/categories/education/std_info", { university: selectedCollegeName });
   } catch (error) {
-    console.error("Error saving college:", error);
     res.status(500).send("Failed to save selected college.");
   }
 });
 
+// Student info form (POST)
 app.post("/std_info", async (req, res) => {
   try {
     const student = new Students({
@@ -96,17 +104,14 @@ app.post("/std_info", async (req, res) => {
       std_enrol: req.body.std_enrol,
       std_email: req.body.std_email
     });
-    console.log(req.body.std_name, req.body.std_enrol, req.body.std_email);
     await student.save();
-    console.log("✅ Student saved successfully!");
-
     res.redirect(`/uploadResult`);
   } catch (error) {
-    console.error("Error saving student:", error);
     res.status(500).send("Failed to save student data.");
   }
 });
 
+// Redirect to upload result page with session data
 app.post("/upload", (req, res) => {
   const { std_name, std_email, std_enrol } = req.body;
   if (!std_name || !std_email || !std_enrol) {
@@ -116,6 +121,7 @@ app.post("/upload", (req, res) => {
   res.redirect("/uploadResult");
 });
 
+// Render upload result page
 app.get("/uploadResult", (req, res) => {
   res.render("pages/categories/education/uploadResult", {
     errorMessage: null,
@@ -124,43 +130,36 @@ app.get("/uploadResult", (req, res) => {
   });
 });
 
-app.post("/uploadResult", upload.single("file"), async (req, res) => {
-  try {
-    if (!req.file) {
-      return res.render("pages/categories/education/uploadResult", {
-        errorMessage: "No file uploaded.",
+// Handle file upload and parsing
+app.post("/uploadResult", (req, res, next) => {
+  uploadMiddleware(req, res, function (err) {
+    if (err instanceof multer.MulterError) {
+      return res.status(400).render("pages/categories/education/uploadResult", {
+        errorMessage: err.message || "File upload failed!",
         parsedResult: null,
         filePreview: null,
         uploadedFilePath: null
       });
     }
-
+    if (!req.file) {
+      return res.status(400).render("pages/categories/education/uploadResult", {
+        errorMessage: "Invalid file type! Only PDF files are allowed.",
+        parsedResult: null,
+        filePreview: null,
+        uploadedFilePath: null
+      });
+    }
+    next();
+  });
+}, async (req, res) => {
+  try {
     const filePath = req.file.path;
     const filePreview = `/uploads/${req.file.filename}`;
-    console.log("✅ File uploaded successfully:", filePath);
-
-    // Save file info to DB with userId (history tracking)
-    if (req.session.userId) {
-      const newFile = new Files({
-        userId: req.session.userId,
-        filePath: filePreview,
-        uploadDate: new Date()
-      });
-      await newFile.save();
-      console.log("✅ File saved to DB!");
-    } else {
-      console.warn("⚠️ No userId in session, skipping file history save.");
-    }
-
     const selectedUniversityFullName = req.session.university;
     const universityCode = university_code_map[selectedUniversityFullName];
-
-    if (!universityCode) {
-      return res.status(400).send("No parser found for the selected university.");
-    }
-
     const parser = university_parse_map[universityCode];
-    if (!parser) {
+
+    if (!universityCode || !parser) {
       return res.status(400).send("No parser found for the selected university.");
     }
 
@@ -171,6 +170,19 @@ app.post("/uploadResult", upload.single("file"), async (req, res) => {
       enrollmentNumber: req.session.student?.std_enrol,
       university: selectedUniversityFullName
     };
+
+    // Save file entry to DB if user is logged in
+    if (req.session.userId) {
+      const fileDoc = new Files({
+        userId: req.session.userId,
+        filePath: filePreview,
+        uploadDate: new Date(),
+        university: selectedUniversityFullName,
+        parsedData: result,
+        status: 'success'
+      });
+      await fileDoc.save();
+    }
 
     req.session.latestParsedResult = result;
 
@@ -183,7 +195,20 @@ app.post("/uploadResult", upload.single("file"), async (req, res) => {
 
   } catch (err) {
     console.error("❌ PDF parsing error:", err);
-    res.render("pages/categories/education/uploadResult", {
+
+    // Save failure entry if user is logged in
+    if (req.session.userId && req.file) {
+      const failedFile = new Files({
+        userId: req.session.userId,
+        filePath: `/uploads/${req.file.filename}`,
+        uploadDate: new Date(),
+        university: req.session.university || "Unknown",
+        status: 'failed'
+      });
+      await failedFile.save();
+    }
+
+    res.status(500).render("pages/categories/education/uploadResult", {
       errorMessage: "Failed to parse the PDF. Please ensure it's a valid university result PDF.",
       parsedResult: null,
       filePreview: null,
@@ -192,15 +217,12 @@ app.post("/uploadResult", upload.single("file"), async (req, res) => {
   }
 });
 
+// View uploaded files for logged-in user
 app.get("/viewItems", async (req, res) => {
   try {
     const userFiles = await Files.find({ userId: req.session.userId }).sort({ uploadDate: -1 });
-    console.log("User files:", userFiles);
-    res.render("pages/categories/education/viewItems", {
-      files: userFiles
-    });
+    res.render("pages/categories/education/viewItems", { files: userFiles });
   } catch (err) {
-    console.error("Error fetching files:", err);
     res.render("pages/categories/education/viewItems", {
       files: [],
       errorMessage: "Failed to fetch uploaded files."
@@ -208,35 +230,84 @@ app.get("/viewItems", async (req, res) => {
   }
 });
 
-app.get('/about', (req, res) => {
-  res.render('pages/categories/aboutServices/about');
+// Static info pages
+app.get('/about', (req, res) => res.render('pages/categories/aboutServices/about'));
+app.get("/insurance", (req, res) => res.render("pages/categories/insurance/insurance"));
+app.get("/edu_about", (req, res) => res.render("pages/categories/education/about"));
+app.get("/ins_about", (req, res) => res.render("pages/categories/insurance/insurance"));
+
+// Admin dashboard with analytics
+app.get('/admin/dashboard', async (req, res) => {
+  try {
+    const totalUploads = await Files.countDocuments();
+    const successfulParses = await Files.countDocuments({ status: 'success' });
+    const failedParses = await Files.countDocuments({ status: 'failed' });
+    const universityWiseStats = await Files.aggregate([
+      { $group: { _id: "$university", count: { $sum: 1 } } }
+    ]);
+
+    res.render('pages/admin/dashboard', {
+      totalUploads,
+      successfulParses,
+      failedParses,
+      universityWiseStats
+    });
+  } catch (error) {
+    console.error('Error fetching analytics:', error);
+    res.status(500).send('Error fetching analytics');
+  }
 });
 
-app.get("/insurance", (req, res) => {
-  res.render("pages/categories/insurance/insurance")
+// Admin manage users
+app.get('/admin/manage-users', async (req, res) => {
+  try {
+    const users = await User.find();
+    res.render('pages/admin/manageUsers', { users });
+  } catch (error) {
+    res.status(500).send('Error fetching users');
+  }
 });
 
-app.get("/edu_about", (req, res) => {
-  res.render("pages/categories/education/about")
+// Admin manage uploaded documents
+app.get('/admin/manage-documents', async (req, res) => {
+  try {
+    const files = await Files.find().populate('userId', 'email name');
+    res.render('pages/admin/manageDocuments', { files });
+  } catch (error) {
+    res.status(500).send('Error retrieving documents');
+  }
 });
 
-app.get("/ins_about", (req, res) => {
-  res.render("pages/categories/insurance/insurance")
+// Admin view parsed result data
+app.get('/admin/view-parsed/:fileId', async (req, res) => {
+  try {
+    const file = await Files.findById(req.params.fileId);
+    res.render('pages/admin/viewParsed', { parsedData: file.parsedData });
+  } catch (error) {
+    res.status(500).send('Error viewing parsed data');
+  }
 });
 
-const adminRoutes = require('./routes/admin');
-app.use('/admin', adminRoutes);
+// Admin delete document entry
+app.get('/admin/delete-file/:fileId', async (req, res) => {
+  try {
+    await Files.findByIdAndDelete(req.params.fileId);
+    res.redirect('/admin/manage-documents');
+  } catch (error) {
+    res.status(500).send('Error deleting file');
+  }
+});
 
-// Error handling middleware
+// Global error handler
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).send(`Something broke! Error: ${err.message}`);
 });
 
-app.get("/", (req, res) => {
-  res.redirect("/home");
-});
+// Redirect root to /home
+app.get("/", (req, res) => res.redirect("/home"));
 
-app.listen(2105, () => {
-  console.log("🚀 Server running on port 2105");
+// Start the server
+app.listen(5904, () => {
+  console.log("🚀 Server running on port 5904");
 });

@@ -31,12 +31,17 @@ class gnu_parse {
   processGanpatResult(tables) {
     const allCells = this.flattenTables(tables);
 
-    return {
+    const result = {
       studentInfo: this.extractStudentInfo(allCells),
       courses: this.extractCourses(allCells),
       performance: this.extractPerformance(allCells),
       userInfo: {}
     };
+
+    // Validation checks:
+    this.validateParsedResult(result);
+
+    return result;
   }
 
   flattenTables(tables) {
@@ -50,27 +55,27 @@ class gnu_parse {
   }
 
   extractStudentInfo(rows) {
-    // console.log("Rows:", rows);
-  
+    console.log("Rows:", rows);
+
     let enrollmentNumber = "N/A", name = "N/A", branch = "N/A", semester = "N/A";
     let monthAndYearOfExamination = "N/A", examType = "N/A", programme = "N/A", institute = "N/A", resultStatus = "N/A";
-  
+
     let basicInfo_rows = [];
     rows.forEach((row, i) => {
       if (row[0].match(/Enrollment\s*Number/i)) {
         basicInfo_rows.push(...[row, rows[i + 1]]);
       }
     });
-  
-    // console.log("🎯 Basic Info Rows:", basicInfo_rows);
-  
+
+    console.log("🎯 Basic Info Rows:", basicInfo_rows);
+
     if (basicInfo_rows.length >= 2) {
       const headers = basicInfo_rows[0];
       const dataRow = basicInfo_rows[1];
-  
+
       headers.forEach((header, index) => {
         const value = (dataRow[index]?.replace(/\r/g, ' ').trim()) || "";
-  
+
         if (/Enrollment\s*Number/i.test(header)) {
           enrollmentNumber = value || "N/A";
         }
@@ -85,7 +90,7 @@ class gnu_parse {
         }
         if (/Month\s*and\s*Year\s*of\s*Examination/i.test(header)) {
           let val = (dataRow[index]?.replace(/\r/g, ' ').trim()) || "N/A";
-        
+
           if (val.includes("REGULAR") || val.includes("SUPPLEMENTARY")) {
             const parts = val.split(/\b(REGULAR|SUPPLEMENTARY)\b/i);
             monthAndYearOfExamination = parts[0].trim();
@@ -96,32 +101,32 @@ class gnu_parse {
         }
       });
     }
-  
+
     // Now scan other lines for extra info
     rows.forEach(row => {
       const line = row.join(' ').replace(/\r/g, ' ').replace(/\s+/g, ' ').trim();
-  
+
       if (line.includes('Programme') && programme === "N/A") {
         const progMatch = line.match(/Programme\s*(.+)/i);
         if (progMatch) {
           programme = progMatch[1].trim();
         }
       }
-  
+
       if (line.includes('Name of Institute') && institute === "N/A") {
         const instMatch = line.match(/Name of Institute\s*(.+)/i);
         if (instMatch) {
           institute = instMatch[1].trim();
         }
       }
-  
+
       if (/\b(REGULAR|SUPPLEMENTARY)\b/i.test(line)) {
         const examTypeMatch = line.match(/\b(REGULAR|SUPPLEMENTARY)\b/i);
         if (examTypeMatch) {
           examType = examTypeMatch[1].toUpperCase();
         }
       }
-  
+
       if (/\b(PASS|FAIL)\b/i.test(line)) {
         const resultStatusMatch = line.match(/\b(PASS|FAIL)\b/i);
         if (resultStatusMatch) {
@@ -129,7 +134,7 @@ class gnu_parse {
         }
       }
     });
-  
+
     return {
       enrollmentNumber,
       name,
@@ -142,7 +147,7 @@ class gnu_parse {
       resultStatus
     };
   }
-  
+
   extractCourses(rows) {
     const courses = { theory: [], practical: [] };
     let parsingCourses = false;
@@ -235,6 +240,32 @@ class gnu_parse {
       sgpa: 0,
       backlog: 0
     };
+  }
+
+  // New validation function
+  validateParsedResult(result) {
+    const { studentInfo, courses, performance } = result;
+
+    // Check if all student info is "N/A"
+    if (Object.values(studentInfo).every(value => value === "N/A")) {
+      throw new Error("Student information is incomplete.");
+    }
+
+    // Check if no courses were extracted
+    if (courses.theory.length === 0 && courses.practical.length === 0) {
+      throw new Error("No courses found.");
+    }
+
+    // Check if all performance values are 0
+    const { currentSemester, progressive } = performance;
+    if (
+      currentSemester.sgpa === 0 &&
+      currentSemester.totalCredits === 0 &&
+      progressive.sgpa === 0 &&
+      progressive.totalCredits === 0
+    ) {
+      throw new Error("Performance data is incomplete.");
+    }
   }
 }
 

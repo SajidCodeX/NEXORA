@@ -1,0 +1,69 @@
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 20px 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  
+  thead {
+    background-color: #f7f9fc;
+    text-align: left;
+  }
+  
+  th {
+    padding: 16px 20px;
+    font-weight: 600;
+    color: #333;
+    background: #f1f4f9;
+    font-size: 15px;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  
+  tbody tr {
+    background-color: #fff;
+    transition: background 0.3s ease;
+  }
+  
+  tbody tr:hover {
+    background-color: #f9fbff;
+  }
+  
+  td {
+    padding: 16px 20px;
+    color: #444;
+    font-size: 14px;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  
+  a {
+    text-decoration: none;
+    margin-right: 10px;
+    font-weight: 500;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    transition: 0.3s ease;
+  }
+  
+  a[href*="block-user"] {
+    color: #fff;
+    background-color: #ef4444;
+  }
+  
+  a[href*="block-user"]:hover {
+    background-color: #dc2626;
+  }
+  
+  a[href*="reset-password"] {
+    color: #fff;
+    background-color: #3b82f6;
+  }
+  
+  a[href*="reset-password"]:hover {
+    background-color: #2563eb;
+  }
+  

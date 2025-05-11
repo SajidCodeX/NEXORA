@@ -4,3 +4,9 @@ uploads
 parsers/preprocessImage.js
 parsers/pdfGanpatParser.js
 parsers/extractTextFromImage.js
+public/static/font
+public/static/img
+public/static/js
+results
+utils
+views/partials

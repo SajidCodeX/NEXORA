@@ -1,2 +1,135 @@
-<h1>Admin Dashboard</h1>
-<a href="/admin/manage-results">Manage Uploaded Results</a>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="/static/css/app.css"> <!-- AdminKit CSS -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <!-- Sidebar and Topbar (AdminKit) -->
+    <div class="container-scroller">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <h2>Admin Panel</h2>
+            </div>
+            <ul class="nav">
+                <li class="nav-item"><a href="/admin/dashboard" class="nav-link">Dashboard</a></li>
+                <li class="nav-item"><a href="/admin/manage-documents" class="nav-link">Manage Results</a></li>
+                <li class="nav-item"><a href="/admin/manage-users" class="nav-link">Manage Users</a></li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Topbar -->
+            <header class="topbar">
+                <h1 class="text-center text-primary">Dashboard</h1>
+            </header>
+
+            <!-- Dashboard Stats Section -->
+            <div class="container mt-4">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="card shadow mb-4">
+                            <div class="card-body">
+                                <h5 class="card-title">Total Uploads</h5>
+                                <p class="card-text"><%= totalUploads %></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card shadow mb-4">
+                            <div class="card-body">
+                                <h5 class="card-title">Successful Parses</h5>
+                                <p class="card-text"><%= successfulParses %></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card shadow mb-4">
+                            <div class="card-body">
+                                <h5 class="card-title">Failed Parses</h5>
+                                <p class="card-text"><%= failedParses %></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card shadow mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Total Users</h5>
+                            <p class="card-text"><%= totalUsers %></p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Chart.js Pie Chart -->
+                <div class="card shadow mb-4 chart-card">
+                    <div class="card-body chart-card-body">
+                        <div>
+                            <h5 class="card-title text-center mb-3">Uploads vs Parses</h5>
+                            <canvas id="uploadChart"></canvas>
+                        </div>
+                    </div>
+                </div> 
+                               
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const ctx = document.getElementById('uploadChart').getContext('2d');
+        const totalUploads = <%= totalUploads %>;
+        const successfulParses = <%= successfulParses %>;
+        const failedParses = <%= failedParses %>; // Use the value from the server-side
+
+        const data = {
+            labels: ['Total Uploads', 'Successful Parses', 'Failed Parses'],
+            datasets: [{
+                label: 'Uploads vs Parses',
+                data: [totalUploads, successfulParses, failedParses],
+                backgroundColor: ['#4e73df', '#1cc88a', '#e74a3b'],
+                hoverBackgroundColor: ['#2e59d9', '#17a673', '#e14a1d'],
+                borderColor: '#4e73df',
+                borderWidth: 1
+            }],
+        };
+
+        const config = {
+            type: 'pie',
+            data: data,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            boxWidth: 20,
+                            padding: 15
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function (tooltipItem) {
+                                return tooltipItem.label + ': ' + tooltipItem.raw;
+                            }
+                        }
+                    }
+                }
+            }
+        };
+        
+
+        const uploadChart = new Chart(ctx, config);
+    </script>
+
+    <!-- AdminKit JS -->
+    <script src="/static/js/app.js"></script>
+</body>
+
+</html>

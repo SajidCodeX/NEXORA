@@ -44,53 +44,48 @@ router.get("/login", (req, res) => {
 });
 
 router.post('/login', async (req, res) => {
-    const { email, password } = req.body; // form se email aur password aaya
+  const { email, password } = req.body;
 
-    if (!email || !password) {
-        return res.render('pages/auth/login', { errorMessage: 'Email and password are required!' });
+  if (!email || !password) {
+    return res.render('pages/auth/login', { errorMessage: 'Email and password are required!' });
+  }
+
+  try {
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.render('pages/auth/login', { errorMessage: 'Invalid credentials!' });
     }
 
-    try {
-        const user = await User.findOne({ email: email }); // email se user dhund rahe hai
-
-        if (!user) {
-            return res.render('pages/auth/login', { errorMessage: 'Invalid credentials!' });
-        }
-
-        const isMatch = await bcrypt.compare(password, user.password); // password compare karo (hash ke sath)
-
-        if (!isMatch) {
-            return res.render('pages/auth/login', { errorMessage: 'Invalid credentials!' });
-        }
-
-        // Login success
-        req.session.user = {
-            _id: user._id,
-            username: user.username,
-            email: user.email,
-        };
-        req.session.isAuthenticated = true;
-        req.session.userId = user._id;
-
-        res.redirect('/home');
-    } catch (err) {
-        console.error('Login error:', err);
-        res.render('pages/auth/login', { errorMessage: 'Server error!' });
+    if (user.status === 'blocked') {
+      return res.render('pages/auth/login', { errorMessage: 'Your account has been blocked. Please contact support.' });
     }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    if (!isMatch) {
+      return res.render('pages/auth/login', { errorMessage: 'Invalid credentials!' });
+    }
+
+    // Login success
+    req.session.user = {
+      _id: user._id,
+      username: user.username,
+      email: user.email,
+    };
+    req.session.isAuthenticated = true;
+    req.session.userId = user._id;
+
+    res.redirect('/home');
+  } catch (err) {
+    console.error('Login error:', err);
+    res.render('pages/auth/login', { errorMessage: 'Server error!' });
+  }
 });
 
 router.get('/profile', (req, res) => {
-    if (!req.session.user) {
-      return res.redirect('/auth/login');
-    }
-  
-    res.render('pages/auth/profile', {
-      user: req.session.user
-    });
-  });
-
-
-
+  res.render('pages/auth/profile')
+})
 
 // Logout Route
 router.get("/logout", (req, res) => {

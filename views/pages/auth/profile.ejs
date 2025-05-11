@@ -1,25 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Profile</title>
-  <link rel="stylesheet" href="/css/auth/profile.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= user.username || "Profile" %> | NEXORA</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
 </head>
-<body>
+<body class="bg-gradient-to-tr from-blue-50 to-white min-h-screen flex items-center justify-center px-4">
 
-<div class="profile-container">
-  <h2>Welcome, <%= user.username %>!</h2>
+  <div class="bg-white shadow-2xl rounded-2xl p-8 max-w-md w-full text-center animate-fade-in">
+    <div class="flex justify-center mb-4">
+      <img 
+        class="w-28 h-28 rounded-full shadow-md border-4 border-blue-500 object-cover transition-transform hover:scale-105" 
+        src="<%= user.avatar || '/img/default-avatar.png' %>" 
+        alt="Avatar"
+      />
+    </div>
 
-  <div class="user-details">
-    <p><strong>Username:</strong> <%= user.username %></p>
-    <p><strong>Email:</strong> <%= user.email %></p>
-    <!-- (Optional) Add more fields later like createdAt -->
+    <h1 class="text-3xl font-semibold text-gray-800 mb-1">Welcome, <%= user.username || "User" %>!</h1>
+    <p class="text-gray-500 text-sm mb-4"><%= user.email || "No email provided" %></p>
+
+    <div class="text-left bg-gray-50 p-4 rounded-xl shadow-inner space-y-2">
+      <p class="flex items-center gap-2"><i data-lucide="user" class="w-4 h-4 text-blue-600"></i> <strong>Username:</strong> <span><%= user.username || "N/A" %></span></p>
+      <p class="flex items-center gap-2"><i data-lucide="mail" class="w-4 h-4 text-blue-600"></i> <strong>Email:</strong> <span><%= user.email || "N/A" %></span></p>
+      <% if (user.createdAt) { %>
+        <p class="flex items-center gap-2"><i data-lucide="calendar" class="w-4 h-4 text-blue-600"></i> <strong>Joined:</strong> <span><%= new Date(user.createdAt).toLocaleDateString() %></span></p>
+      <% } %>
+    </div>
+
+    <div class="mt-6 flex justify-between items-center">
+      <a href="/logout" class="bg-red-500 hover:bg-red-600 text-white text-sm px-4 py-2 rounded-lg shadow flex items-center gap-2 transition">
+        <i data-lucide="log-out" class="w-4 h-4"></i> Logout
+      </a>
+    </div>
   </div>
 
-  <div class="logout-link">
-    <a href="/logout">Logout</a>
-  </div>
-</div>
-
+  <script>
+    lucide.createIcons();
+  </script>
 </body>
 </html>

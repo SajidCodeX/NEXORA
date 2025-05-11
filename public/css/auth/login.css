@@ -5,14 +5,23 @@ body {
   margin: 0;
   padding: 0;
   min-height: 100vh;
-  background: url('/img/background.jpg') no-repeat center center/cover; /* Change path if needed */
+  background: url('/img/.jpg') no-repeat center center/cover; /* Change path if needed */
   display: flex;
   justify-content: center;
   align-items: center;
   overflow: hidden;
 }
 
+h2 {
+  text-align: center;
+  color: #1a73e8; /* same blue as login heading */
+  margin-bottom: 2rem;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
 .login-container {
+
   background: rgba(255, 255, 255, 0.75); /* Transparency added */
   backdrop-filter: blur(10px); /* Glass effect */
   border-radius: 4px; /* Sharp corners */

@@ -3,7 +3,7 @@ body {
   margin: 0;
   padding: 0;
   min-height: 100vh;
-  background: url('/img/background.jpg') no-repeat center center/cover; /* Change path if needed */
+  background: url('/img/.jpg') no-repeat center center/cover; /* Change path if needed */
   display: flex;
   justify-content: center;
   align-items: center;

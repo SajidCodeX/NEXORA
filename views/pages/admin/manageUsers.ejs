@@ -1,0 +1,27 @@
+<link rel="stylesheet" href="/css/admin/manageUsers.css">
+
+<table>
+  <thead>
+    <tr>
+      <th>User Email</th>
+      <th></th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% users.forEach(user => { %>
+      <tr>
+        <td><%= user.email %></td>
+        <td><%= user.uploadCount %></td>
+        <td>
+          <% if (user.status === 'blocked') { %>
+            <a href="/admin/unblock-user/<%= user._id %>">Unblock</a>
+          <% } else { %>
+            <a href="/admin/block-user/<%= user._id %>">Block</a>
+          <% } %>
+          <a href="/admin/reset-password/<%= user._id %>">Reset Password</a>
+        </td>
+      </tr>
+    <% }); %>
+  </tbody>
+</table>

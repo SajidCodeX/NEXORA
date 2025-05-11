@@ -4,22 +4,28 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="/css/edu/viewItems.css">
-  <title>Document</title>
+  <title>Your Uploaded Files</title>
 </head>
 <body>
   <h2>Your Uploaded Files</h2>
-<% if (files.length > 0) { %>
-  <ul>
-    <% files.forEach(file => { %>
-      <li>
-        <strong>Uploaded:</strong> <%= file.uploadDate.toLocaleString() %> <br>
-        <a href="<%= file.filePath %>" target="_blank">Open File</a>
-      </li>
-    <% }) %>
-  </ul>
-<% } else { %>
-  <p>No files found for your account.</p>
-<% } %>
+  <h3>Total uploaded files: <%= files.length %></h3>
+
+    <% if (files.length > 0) { %>
+      <ul>
+        <% files.forEach(file => { %>
+          <li>
+            <strong>Uploaded:</strong> <%= new Date(file.uploadDate).toLocaleString() %> <br>
+            <a href="<%= file.filePath %>" target="_blank">Open File</a>
+          </li>
+        <% }) %>
+      </ul>
+    <% } else { %>
+      <p>No files found for your account.</p>
+    <% } %>
+
+    <script>
+      const totalItems = <%= files.length %>;
+      console.log("Total uploaded files:", totalItems);
+    </script>
 </body>
 </html>
-
