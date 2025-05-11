@@ -6,12 +6,12 @@ NEXORA is a powerful, modular document parsing and analytics platform built with
 
 ## 🚀 Features
 
-- 📤 **PDF/PNG Upload**: Users can upload university result files.
-- 🧠 **Smart Parsing**: Custom parsers using Tesseract OCR + Tabula for text and table extraction.
+- 📤 **PDF Upload**: Users can upload university result files.
+- 🧠 **Smart Parsing**: Custom parsers using Tabula for text and table extraction.
 - 📊 **Result Viewer**: Display parsed results cleanly on the frontend.
 - 🛡 **Admin Panel**:
   - Manage all uploaded documents.
-  - View parsed results (JSON/Table view).
+  - View parsed results (JSON).
   - Delete faulty records.
   - Track analytics (university-wise stats, success/failure charts).
   - Manage users (upload count, future block/unblock).
@@ -19,28 +19,11 @@ NEXORA is a powerful, modular document parsing and analytics platform built with
 
 ---
 
-## 🏗 Project Structure
-
-NEXORA/
-├── config/ # DB and environment configs
-├── controllers/ # Route logic
-├── models/ # Mongoose models (User, File, etc.)
-├── parsers/ # University-specific parsers
-├── public/ # Static files (CSS, JS)
-├── routes/ # Express routes
-├── views/ # EJS frontend templates
-├── utils/ # Utility helpers (e.g., file handling)
-├── app.js # Entry point
-└── README.md # You are here
-
----
-
 ## ⚙️ Technologies Used
 
 - **Node.js** + **Express.js** – Backend framework
 - **MongoDB Atlas** – Database for storing user and file data
-- **Tesseract.js** – OCR engine for reading image/PDF content
-- **pdf-parse** / **Tabula** – Extract tabular data from PDFs
+- **Tabula** – Extract tabular data from PDFs
 - **EJS** – Templating engine for rendering UI
 - **Multer** – File upload handling
 
