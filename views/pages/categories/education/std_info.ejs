@@ -16,7 +16,7 @@
             <input type="text" id="std_name" name="std_name" placeholder="Enter your name" required>
 
             <label for="std_enrol">Student Enrollment:</label>
-            <input type="number" id="std_enrol" name="std_enrol" placeholder="Enter enrollment number" required>
+            <input type="text" id="std_enrol" name="std_enrol" placeholder="Enter enrollment number" required>
 
             <label for="std_email">Student E-mail:</label>
             <input type="email" id="std_email" name="std_email" placeholder="Enter your email" required>
@@ -24,5 +24,66 @@
             <button type="submit">NEXT</button>
         </form>
     </div>
+    <script>
+        document.querySelector("form").addEventListener("submit", function (event) {
+            const university = document.querySelector('input[name="university"]').value.trim();
+            const nameInput = document.getElementById("std_name");
+            const enrolInput = document.getElementById("std_enrol");
+            const emailInput = document.getElementById("std_email");
+    
+            const name = nameInput.value.trim();
+            const enrol = enrolInput.value.trim();
+            const email = emailInput.value.trim();
+    
+            // Basic name validation (letters and space, min 2 chars)
+            const nameRegex = /^[A-Za-z\s]{2,}$/;
+            if (!nameRegex.test(name)) {
+                alert("Name must contain only letters and spaces, at least 2 characters.");
+                nameInput.focus();
+                event.preventDefault();
+                return;
+            }
+    
+            if (university === "Ganpat University") {
+                const ganpatEnrolRegex = /^\d{11}$/;
+                const ganpatEmailRegex = /^[a-zA-Z0-9._%+-]+@gnu\.ac\.in$/;
+    
+                if (!ganpatEnrolRegex.test(enrol)) {
+                    alert("Ganpat Enrollment number must be exactly 11 digits.");
+                    enrolInput.focus();
+                    event.preventDefault();
+                    return;
+                }
+    
+                if (!ganpatEmailRegex.test(email)) {
+                    alert("Ganpat Email must end with @gnu.ac.in.");
+                    emailInput.focus();
+                    event.preventDefault();
+                    return;
+                }
+            }
+    
+            else if (university === "GMERS") {
+                const gmersEnrolRegex = /^MBBS\d{11}$/;
+                const gmersEmailRegex = /^[a-zA-Z0-9._%+-]+@hngu\.ac\.in$/;
+    
+                if (!gmersEnrolRegex.test(enrol)) {
+                    alert("GMERS Enrollment must start with 'MBBS' followed by 11 digits (like MBBS40421064541).");
+                    enrolInput.focus();
+                    event.preventDefault();
+                    return;
+                }
+    
+                if (!gmersEmailRegex.test(email)) {
+                    alert("GMERS Email must end with @hngu.ac.in.");
+                    emailInput.focus();
+                    event.preventDefault();
+                    return;
+                }
+            }
+        });
+    </script>
+    
+    
 </body>
 </html>

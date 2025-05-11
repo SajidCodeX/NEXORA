@@ -42,12 +42,17 @@ form {
     cursor: pointer;
 }
 
+.custom-file-upload:hover {
+    background: #e0e0e0;
+}
+
+
 input[type="file"] {
     display: none;
 }
 
 .upload-btn {
-    background: #ff4b2b;
+    background: #132d4f;
     color: white;
     padding: 10px;
     border: none;
@@ -57,10 +62,10 @@ input[type="file"] {
 }
 
 .upload-btn:hover {
-    background: #e63c1d;
+    background: #0b1f3a;
 }
 .home-btn{
-    background: #ff4b2b;
+    background: #132d4f;
     color: white;
     padding: 10px;
     border: none;
@@ -68,9 +73,14 @@ input[type="file"] {
     cursor: pointer;
     font-weight: bold;
     position: fixed;
-    bottom: 20px;
-    left: 20px;
-    z-index: 1000;      
+    bottom: 40px;
+    left: 40px;
+    z-index: 1000;  
+    width: 530px;    
+}
+
+.home-btn:hover {
+    background: #0b1f3a;
 }
 
 #previewContainer embed {
@@ -120,7 +130,7 @@ pre {
 }
 
 .json-btn {
-    background-color: #ff4b2b;
+    background-color: #132d4f;
     color: white;
     padding: 5px 10px;
     border: none;
@@ -129,5 +139,5 @@ pre {
 }
 
 .json-btn:hover {
-    background-color: #e63c1d;
+    background-color: #132d4f;
 }

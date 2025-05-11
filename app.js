@@ -132,6 +132,7 @@ app.get("/uploadResult", (req, res) => {
 
 // Handle file upload and parsing
 app.post("/uploadResult", (req, res, next) => {
+  // Handle file upload validation
   uploadMiddleware(req, res, function (err) {
     if (err instanceof multer.MulterError) {
       return res.status(400).render("pages/categories/education/uploadResult", {
@@ -141,6 +142,7 @@ app.post("/uploadResult", (req, res, next) => {
         uploadedFilePath: null
       });
     }
+
     if (!req.file) {
       return res.status(400).render("pages/categories/education/uploadResult", {
         errorMessage: "Invalid file type! Only PDF files are allowed.",
@@ -149,20 +151,29 @@ app.post("/uploadResult", (req, res, next) => {
         uploadedFilePath: null
       });
     }
-    next();
+
+    next();  // Proceed to the next middleware after upload validation
   });
 }, async (req, res) => {
   try {
     const filePath = req.file.path;
     const filePreview = `/uploads/${req.file.filename}`;
     const selectedUniversityFullName = req.session.university;
+
+    // Check if the university code and parser are available
     const universityCode = university_code_map[selectedUniversityFullName];
     const parser = university_parse_map[universityCode];
 
     if (!universityCode || !parser) {
-      return res.status(400).send("No parser found for the selected university.");
+      return res.status(400).render("pages/categories/education/uploadResult", {
+        errorMessage: "No parser found for the selected university.",
+        parsedResult: null,
+        filePreview,
+        uploadedFilePath: filePreview
+      });
     }
 
+    // Attempt to parse the file
     const result = await parser.parse(filePath);
     result.userInfo = {
       name: req.session.student?.std_name,
@@ -171,7 +182,7 @@ app.post("/uploadResult", (req, res, next) => {
       university: selectedUniversityFullName
     };
 
-    // Save file entry to DB if user is logged in
+    // Save the parsed file info in the database
     if (req.session.userId) {
       const fileDoc = new Files({
         userId: req.session.userId,
@@ -184,6 +195,7 @@ app.post("/uploadResult", (req, res, next) => {
       await fileDoc.save();
     }
 
+    // Store parsed data in session and render success
     req.session.latestParsedResult = result;
 
     res.render("pages/categories/education/uploadResult", {
@@ -196,7 +208,7 @@ app.post("/uploadResult", (req, res, next) => {
   } catch (err) {
     console.error("❌ PDF parsing error:", err);
 
-    // Save failure entry if user is logged in
+    // Save failure entry in the database for tracking failed files
     if (req.session.userId && req.file) {
       const failedFile = new Files({
         userId: req.session.userId,
@@ -208,6 +220,7 @@ app.post("/uploadResult", (req, res, next) => {
       await failedFile.save();
     }
 
+    // Render error message for failed parsing
     res.status(500).render("pages/categories/education/uploadResult", {
       errorMessage: "Failed to parse the PDF. Please ensure it's a valid university result PDF.",
       parsedResult: null,
@@ -216,6 +229,7 @@ app.post("/uploadResult", (req, res, next) => {
     });
   }
 });
+
 
 // View uploaded files for logged-in user
 app.get("/viewItems", async (req, res) => {
@@ -308,6 +322,6 @@ app.use((err, req, res, next) => {
 app.get("/", (req, res) => res.redirect("/home"));
 
 // Start the server
-app.listen(5904, () => {
+app.listen(9999, () => {
   console.log("🚀 Server running on port 5904");
 });

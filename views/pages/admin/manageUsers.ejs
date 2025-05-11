@@ -1,27 +1,45 @@
 <link rel="stylesheet" href="/css/admin/manageUsers.css">
+<link rel="stylesheet" href="/static/css/app.css">
 
-<table>
-  <thead>
-    <tr>
-      <th>User Email</th>
-      <th></th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% users.forEach(user => { %>
-      <tr>
-        <td><%= user.email %></td>
-        <td><%= user.uploadCount %></td>
-        <td>
-          <% if (user.status === 'blocked') { %>
-            <a href="/admin/unblock-user/<%= user._id %>">Unblock</a>
-          <% } else { %>
-            <a href="/admin/block-user/<%= user._id %>">Block</a>
-          <% } %>
-          <a href="/admin/reset-password/<%= user._id %>">Reset Password</a>
-        </td>
-      </tr>
-    <% }); %>
-  </tbody>
-</table>
+<!-- Sidebar -->
+<nav class="sidebar">
+  <div class="sidebar-header">
+    <h2>Admin Panel</h2>
+  </div>
+  <ul class="nav">
+    <li class="nav-item"><a href="/admin/dashboard" class="nav-link">Dashboard</a></li>
+    <li class="nav-item"><a href="/admin/manage-documents" class="nav-link">Manage Results</a></li>
+    <li class="nav-item"><a href="/admin/manage-users" class="nav-link">Manage Users</a></li>
+  </ul>
+</nav>
+
+<!-- Main Content -->
+<div class="main-content">
+  <div class="user-table">
+    <table>
+      <thead>
+        <tr>
+          <th>User Email</th>
+          <th>Upload Count</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% users.forEach(user => { %>
+          <tr>
+            <td><%= user.email %></td>
+            <td><%= user.uploadCount %></td>
+            <td>
+              <% if (user.status === 'blocked') { %>
+                <a href="/admin/unblock-user/<%= user._id %>" class="unblock-link">Unblock</a>
+              <% } else { %>
+                <a href="/admin/block-user/<%= user._id %>" class="block-link">Block</a>
+              <% } %>
+              <a href="/admin/reset-password/<%= user._id %>" class="reset-link">Reset Password</a>              
+            </td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  </div>
+</div>

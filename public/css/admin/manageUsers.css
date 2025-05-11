@@ -1,69 +1,97 @@
-table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
-    margin: 20px 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    border-radius: 12px;
-    overflow: hidden;
-  }
-  
-  thead {
-    background-color: #f7f9fc;
-    text-align: left;
-  }
-  
-  th {
-    padding: 16px 20px;
-    font-weight: 600;
-    color: #333;
-    background: #f1f4f9;
-    font-size: 15px;
-    border-bottom: 1px solid #e5e7eb;
-  }
-  
-  tbody tr {
-    background-color: #fff;
-    transition: background 0.3s ease;
-  }
-  
-  tbody tr:hover {
-    background-color: #f9fbff;
-  }
-  
-  td {
-    padding: 16px 20px;
-    color: #444;
-    font-size: 14px;
-    border-bottom: 1px solid #f0f0f0;
-  }
-  
-  a {
-    text-decoration: none;
-    margin-right: 10px;
-    font-weight: 500;
-    padding: 6px 12px;
-    border-radius: 6px;
-    font-size: 13px;
-    transition: 0.3s ease;
-  }
-  
-  a[href*="block-user"] {
-    color: #fff;
-    background-color: #ef4444;
-  }
-  
-  a[href*="block-user"]:hover {
-    background-color: #dc2626;
-  }
-  
-  a[href*="reset-password"] {
-    color: #fff;
-    background-color: #3b82f6;
-  }
-  
-  a[href*="reset-password"]:hover {
-    background-color: #2563eb;
-  }
-  
+/* Sidebar styles */
+.sidebar {
+  width: 250px;
+  background-color: #2c3e50;
+  color: #fff;
+  padding-top: 30px;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.sidebar-header {
+  text-align: center;
+  padding: 15px;
+  background-color: #34495e;
+  font-size: 22px;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.nav {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.nav-item {
+  margin: 15px 0;
+}
+
+/* Sleek-style sidebar nav links */
+.nav-link {
+  background: none;
+  border: none;
+  color: #cbd5e1;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 500;
+  display: block;
+  padding: 10px 20px;
+  transition: all 0.2s ease-in-out;
+  border-radius: 6px;
+}
+
+.nav-link:hover {
+  color: #ffffff;
+  background-color: #3b3c61;
+  transform: scale(1.02);
+}
+
+
+/* Main content styles */
+.main-content {
+  margin-left: 260px;
+  padding: 40px;
+  background-color: #f5f6fa;
+  min-height: 100vh;
+}
+
+.user-table table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.user-table th,
+.user-table td {
+  padding: 14px 20px;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+}
+
+.user-table th {
+  background-color: #2e3b55;
+  color: #fff;
+}
+
+.user-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+.user-table a.unblock-link {
+  text-decoration: none;
+}
+
+.user-table a.block-link {
+  color: #ef4444; /* red */
+  margin-right: 12px;
+  text-decoration: none;
+}
+
+.user-table a.reset-link {
+  color: #059669; /* green */
+  text-decoration: none;
+}

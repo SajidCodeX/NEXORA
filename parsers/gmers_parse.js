@@ -6,60 +6,20 @@ class gmer_parse {
     const tables = await this.extractTableFromPDF(pdfPath);
     const parsedData = this.processResult(tables);
 
-    // ✅ VALIDATION: Enhanced validation with specific checks
-    const isInvalid = this.validateParsedData(parsedData);
+    // ✅ VALIDATION: Check for empty or invalid result
+    const isInvalid =
+      (!parsedData.studentInfo?.seatNumber || parsedData.studentInfo.seatNumber === "N/A") &&
+      (!parsedData.studentInfo?.name || parsedData.studentInfo.name === "N/A") &&
+      parsedData.subjects.length === 0 &&
+      parsedData.totalMarks.university === 0 &&
+      parsedData.totalMarks.internal === 0 &&
+      parsedData.totalMarks.grand === 0;
 
     if (isInvalid) {
       throw new Error("Invalid GMERS result format or unrelated PDF.");
     }
 
     return parsedData;
-  }
-
-  validateParsedData(parsedData) {
-    // Check if student info is complete
-    const studentInfo = parsedData.studentInfo;
-    if (!studentInfo || 
-        studentInfo.seatNumber === "N/A" || 
-        studentInfo.name === "N/A" || 
-        studentInfo.enrollmentNumber === "N/A" || 
-        studentInfo.college === "N/A") {
-      console.error("Student information is incomplete:", studentInfo);
-      return true;
-    }
-
-    // Validate subjects data
-    if (!Array.isArray(parsedData.subjects) || parsedData.subjects.length === 0) {
-      console.error("No subjects found in the result:", parsedData.subjects);
-      return true;
-    }
-
-    // Ensure each subject has valid marks
-    const invalidSubjects = parsedData.subjects.filter(subject => {
-      return !subject.name || subject.externalTheory.max === "N/A" || subject.internalTheory.max === "N/A" ||
-             subject.externalPractical.max === "N/A" || subject.internalPractical.max === "N/A";
-    });
-
-    if (invalidSubjects.length > 0) {
-      console.error("Invalid subjects data found:", invalidSubjects);
-      return true;
-    }
-
-    // Check total marks are valid
-    const totalMarks = parsedData.totalMarks;
-    if (totalMarks.university === 0 || totalMarks.internal === 0 || totalMarks.grand === 0) {
-      console.error("Invalid total marks:", totalMarks);
-      return true;
-    }
-
-    // Check result status
-    const result = parsedData.result;
-    if (result === "N/A" || result === "") {
-      console.error("Invalid result status:", result);
-      return true;
-    }
-
-    return false;
   }
 
   extractTableFromPDF(pdfPath) {

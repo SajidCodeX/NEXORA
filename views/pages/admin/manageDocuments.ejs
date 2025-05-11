@@ -1,27 +1,50 @@
-<link rel="stylesheet" href="/css/admin/manageDocuments.css">
-<table>
-  <thead>
-    <tr>
-      <th>Username</th>
-      <th>Upload Date</th>
-      <th>University</th>
-      <th>Status</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% files.forEach(file => { %>
-      <tr>
-        <td><%= file.userId.email %></td>
-        <td><%= new Date(file.uploadDate).toLocaleDateString() %></td>
-        <td><%= file.university %></td>
-        <td><%= file.status %></td>
-        <td>
-          <a href="/admin/view-parsed/<%= file._id %>">View</a>
-          <a <a href="/admin/download/<%= file._id %>" class="btn download-btn">Download</a>
-          <a href="/admin/delete-file/<%= file._id %>">Delete</a>
-        </td>
-      </tr>
-    <% }); %>
-  </tbody>
-</table>  
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Manage Documents - Admin Panel</title>
+  <link rel="stylesheet" href="/css/admin/manageDocuments.css">
+  <link rel="stylesheet" href="/static/css/app.css">
+</head>
+<body>
+  <nav class="sidebar">
+    <div class="sidebar-header">
+      <h2>Admin Panel</h2>
+    </div>
+    <ul class="nav">
+      <li class="nav-item"><a href="/admin/dashboard" class="nav-link">Dashboard</a></li>
+      <li class="nav-item"><a href="/admin/manage-documents" class="nav-link">Manage Results</a></li>
+      <li class="nav-item"><a href="/admin/manage-users" class="nav-link">Manage Users</a></li>
+    </ul>
+  </nav>
+
+  <main class="admin-main-content">
+    <table>
+      <thead>
+        <tr>
+          <th>Username</th>
+          <th>Upload Date</th>
+          <th>University</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% files.forEach(file => { %>
+          <tr>
+            <td><%= file.userId.email %></td>
+            <td><%= new Date(file.uploadDate).toLocaleDateString() %></td>
+            <td><%= file.university %></td>
+            <td><%= file.status %></td>
+            <td>
+              <a href="/admin/view-parsed/<%= file._id %>">View</a>
+              <a href="/admin/download/<%= file._id %>" class="btn download-btn">Download</a>
+              <a href="/admin/delete-file/<%= file._id %>">Delete</a>
+            </td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>  
+  </main>
+</body>
+</html>
