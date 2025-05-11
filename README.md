@@ -1,6 +1,6 @@
 # 📄 NEXORA - Document Parser & Analyzer
 
-NEXORA is a powerful, modular document parsing and analytics platform built with Node.js, Express, and MongoDB. It allows users to upload result PDFs or screenshots (e.g., from universities like Ganpat University, GMERS, etc.) and extracts structured, machine-readable JSON data using OCR and parsing techniques. An admin panel enables oversight of uploaded documents, parsed results, and user management.
+NEXORA is a powerful, modular document parsing and analytics platform built with Node.js, Express, and MongoDB. It allows users to upload result PDFs (e.g., from universities like Ganpat University, GMERS, etc.) and extracts structured, machine-readable JSON data using parsing techniques. An admin panel enables oversight of uploaded documents, parsed results, and user management.
 
 ---
 
